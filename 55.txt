@@ -1,0 +1,100 @@
+#include <math.h>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <stdio.h>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
+
+using namespace std;
+
+struct spik {
+	float s = 0;
+	string fam = " ";
+	string imya = " ";
+	string otch = " ";
+	string nazvanie = " ";
+	int stoimost = 0;
+
+};
+
+bool sor(const spik& a1, const spik& a2)
+{
+	return a1.fam < a2.fam;
+}
+
+int main()
+{
+	setlocale(LC_ALL, "rus");
+
+	string x;
+	spik s;
+	ifstream vod;
+
+	vod.open("1.txt");
+	int l = 0;
+
+	if (vod.is_open()) {
+		while (!vod.eof()) {
+			string s;
+			getline(vod, s);
+			l++;
+		}
+	}
+
+	spik* Arr = new spik[l];
+	vod.seekg(0, ios_base::beg);//начало файла
+
+	for (size_t i = 0; i < l; i++)
+	{
+		getline(vod, x);
+		istringstream iss(x);//поток ввода
+		iss >> s.s >> s.fam >> s.imya >> s.otch >> s.nazvanie >> s.stoimost;
+		Arr[i] = s;
+
+	}
+
+	cout << "Книги, взятые из библиотеки: \n" << endl;
+
+	for (size_t n = 0; n < l; n++)
+	{
+		cout << "Номер билета : " << Arr[n].s << " "
+			<< "Фамилия : " << Arr[n].fam << " "
+			<< "Имя : " << Arr[n].imya << " "
+			<< "Отчество : " << Arr[n].otch << " "
+			<< "Название : " << Arr[n].nazvanie << " "
+			<< "Стоимость : " << Arr[n].stoimost << endl;
+	}
+
+	cout << "\nКниги  автора Набокова взятые из библиотеки:\n" << endl;
+
+	for (size_t n = 0; n < l; n++)
+	{
+		if (Arr[n].nazvanie == "Nabokov")
+		{
+			cout << "Номер билета : " << Arr[n].s << " "
+				<< "Фамилия : " << Arr[n].fam << " "
+				<< "Имя : " << Arr[n].imya << " "
+				<< "Отчество : " << Arr[n].otch << " "
+				<< "Название : " << Arr[n].nazvanie << " "
+				<< "Стоимость : " << Arr[n].stoimost << endl;
+		}
+	}
+	cout << "\nКниги, чья стоимость превышает 1000 рублей и не превышает 3000 рублей:\n" << endl;
+
+	sort(Arr, Arr + l, sor);//сортировка
+	for (size_t n = 0; n < l; n++)
+	{
+		if ((Arr[n].stoimost > 1000) && (Arr[n].stoimost < 3000))
+		{
+			cout << "Номер билета : " << Arr[n].s << " "
+				<< "Фамилия : " << Arr[n].fam << " "
+				<< "Имя : " << Arr[n].imya << " "
+				<< "Отчество : " << Arr[n].otch << " "
+				<< "Название : " << Arr[n].nazvanie << " "
+				<< "Стоимость : " << Arr[n].stoimost << endl;
+		}
+	}
+	vod.close();
+}
